@@ -1,13 +1,13 @@
 
 //vertex
 async function load_vshader_source() {
-    let res = await fetch('/shader/vshader.glsl');
+    let res = await fetch('./shader/vshader.glsl');
     return res.text();
 }
 
 //fragment
 async function load_fshader_source() {
-    let res = await fetch('/shader/fshader.glsl');
+    let res = await fetch('./shader/fshader.glsl');
     return res.text();
 }
 
@@ -15,6 +15,7 @@ async function load_fshader_source() {
 function create_shader(gl, shader_type, shader_source) {
     let shader = gl.createShader(shader_type);
     
+    console.log(`load shader code\n${shader_source}`)
     //toss source to shader object, then compile it!
     gl.shaderSource(shader, shader_source);
     gl.compileShader(shader);
@@ -64,14 +65,19 @@ async function main() {
     let gl_program = create_program(gl, vshader, fshader);
 
     let position_attribute_location = gl.getAttribLocation(gl_program, "a_position");
+    let resolution_uniform_location = gl.getUniformLocation(gl_program, "u_resolution");
+
     let position_buffer = gl.createBuffer();
 
     gl.bindBuffer(gl.ARRAY_BUFFER, position_buffer);
 
     let positions = [
-        0, 0,
-        0, 0.5,
-        0.7, 0,
+        10, 20,
+        80, 20,
+        10, 30,
+        10, 30,
+        80, 20,
+        80, 30,
     ];
 
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
@@ -100,12 +106,13 @@ async function main() {
 
     // Tell it to use our program (pair of shaders)
     gl.useProgram(gl_program);
+    gl.uniform2f(resolution_uniform_location, gl.canvas.width, gl.canvas.height);
 
     // Bind the attribute/buffer set we want.
     gl.bindVertexArray(vao);
 
     let primitiveType = gl.TRIANGLES;
-    let count = 3;
+    let count = 6;
     offset = 0; //variable reuse
     
     gl.drawArrays(primitiveType, offset, count);
