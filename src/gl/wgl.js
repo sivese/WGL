@@ -47,7 +47,7 @@ function create_program(gl, vshader, fshader) {
     gl.deleteProgram(program);
 }
 
-async function main() {
+async function GLMain() {
     let canvas = document.querySelector("#c");
     let gl = canvas.getContext("webgl2");
 
@@ -118,4 +118,4 @@ async function main() {
     gl.drawArrays(primitiveType, offset, count);
 }
 
-main();
+export default GLMain;
