@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import GLMain from './gl/wgl';
-import Square from './tic/square';
+import Board from './tic/board';
 import './App.css';
 
 const WebGLCanvas = () => {
@@ -18,8 +18,7 @@ const WebGLCanvas = () => {
 function App() {
   return (
     <div>
-      <Square />
-      <WebGLCanvas />
+      <Board />
     </div>
   );
 }
